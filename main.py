@@ -1,12 +1,20 @@
-import tkinter as tk
 import openai
-# Replace YOUR_MODEL_NAME_HERE with the name of your fine-tuned model from your terminal shell
-# e.g curie:ft-personal-2023-01-03-04-41-41
+import streamlit as st
+
 model_name = "davinci:ft-personal-2023-02-08-03-42-24"
 
-def on_submit():
-    # Get the prompt from the input field
-    prompt = input_field.get()
+def generate_response(prompt):
+    completion = openai.Completion.create(model=model_name, prompt=prompt)
+    text = completion.choices[0]["text"]
+    return text
+
+st.title("Fine-tuned ChatGPT")
+
+prompt = st.text_input("Enter your prompt:")
+
+if prompt:
+    response = generate_response(prompt)
+    st.write("Response:", response)
 
     # Make the completion request
     completion = openai.Completion.create(model=model_name, prompt=prompt)
